@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply Now — ADS Immigration | Canadian Master's Programs</title>
+  <meta name="description" content="Find and apply for Canadian Master's programs. Get matched instantly based on your GPA and English test scores.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="https://adsimmigration.com" class="logo">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="10" fill="#C41E3A"/>
+          <path d="M20 10L8 16l12 6 12-6-12-6z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+          <path d="M14 19v5c0 0 2.5 3 6 3s6-3 6-3v-5" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <span class="logo-name">ADS Immigration</span>
+          <span class="logo-tag">RCIC Regulated · Study Permit Specialists</span>
+        </div>
+      </a>
+      <a href="tel:6043639350" class="header-phone">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6 6l.86-1.86a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 15l.42 1.92z"/></svg>
+        604-363-9350
+      </a>
+    </div>
+  </header>
+
+  <!-- ── Hero ────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">🇨🇦 500+ Canadian Master's Programs</div>
+      <h1>Find & Apply for Your<br>Canadian Master's Program</h1>
+      <p>Enter your scores. See every program you qualify for. Upload your documents. We handle the rest.</p>
+      <div class="hero-steps">
+        <div class="hero-step active" id="nav-1">
+          <span class="step-num">1</span>
+          <span class="step-label">Match Programs</span>
+        </div>
+        <div class="step-arrow">›</div>
+        <div class="hero-step" id="nav-2">
+          <span class="step-num">2</span>
+          <span class="step-label">Select Programs</span>
+        </div>
+        <div class="step-arrow">›</div>
+        <div class="hero-step" id="nav-3">
+          <span class="step-num">3</span>
+          <span class="step-label">Your Profile</span>
+        </div>
+        <div class="step-arrow">›</div>
+        <div class="hero-step" id="nav-4">
+          <span class="step-num">4</span>
+          <span class="step-label">Upload Docs</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main content ─────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- ── STEP 1: Program Finder ──────────────────────────────────── -->
+    <section class="step-section active" id="step-1">
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge">Step 1 of 4</div>
+          <h2>Your Academic Profile</h2>
+          <p>We'll match you to programs instantly based on your scores.</p>
+        </div>
+
+        <div class="form-body">
+
+          <!-- Contact -->
+          <div class="form-row two-col">
+            <div class="field" id="field-fname">
+              <label for="fname">First name</label>
+              <input type="text" id="fname" placeholder="Priya" autocomplete="given-name">
+              <div class="field-error" id="err-fname">Required</div>
+            </div>
+            <div class="field" id="field-lname">
+              <label for="lname">Last name</label>
+              <input type="text" id="lname" placeholder="Sharma" autocomplete="family-name">
+              <div class="field-error" id="err-lname">Required</div>
+            </div>
+          </div>
+
+          <div class="form-row two-col">
+            <div class="field" id="field-email">
+              <label for="email">Email address</label>
+              <input type="email" id="email" placeholder="priya@example.com" autocomplete="email">
+              <div class="field-error" id="err-email">Valid email required</div>
+            </div>
+            <div class="field" id="field-phone">
+              <label for="phone">Phone <span class="label-hint">(with country code)</span></label>
+              <input type="tel" id="phone" placeholder="+91 98765 43210" autocomplete="tel">
+              <div class="field-error" id="err-phone">Include country code e.g. +91</div>
+            </div>
+          </div>
+
+          <!-- GPA -->
+          <div class="field" id="field-gpa">
+            <label for="gpa">GPA <span class="label-hint">(out of 4.0)</span></label>
+            <input type="number" id="gpa" placeholder="3.5" min="0" max="4.0" step="0.01">
+            <div class="field-hint">Your cumulative GPA on a 4.0 scale</div>
+            <div class="field-error" id="err-gpa">GPA must be between 0 and 4.0</div>
+          </div>
+
+          <!-- English test selector -->
+          <div class="test-selector">
+            <label>English Proficiency Test</label>
+            <div class="test-tabs">
+              <button class="test-tab active" data-test="ielts"    type="button">IELTS Academic</button>
+              <button class="test-tab"         data-test="celpip"  type="button">CELPIP</button>
+              <button class="test-tab"         data-test="duolingo"type="button">Duolingo</button>
+              <button class="test-tab"         data-test="pte"     type="button">PTE Academic</button>
+            </div>
+          </div>
+
+          <!-- IELTS -->
+          <div class="test-section visible" id="section-ielts">
+            <div class="ielts-group">
+              <label>Band Scores <span class="label-hint">(0–9, step 0.5)</span></label>
+              <div class="ielts-grid">
+                <div class="ielts-module" id="mod-listening"><label for="ielts-l">Listening</label><input type="number" id="ielts-l" placeholder="7.5" min="0" max="9" step="0.5"></div>
+                <div class="ielts-module" id="mod-reading">  <label for="ielts-r">Reading</label>  <input type="number" id="ielts-r" placeholder="7.0" min="0" max="9" step="0.5"></div>
+                <div class="ielts-module" id="mod-writing">  <label for="ielts-w">Writing</label>  <input type="number" id="ielts-w" placeholder="6.5" min="0" max="9" step="0.5"></div>
+                <div class="ielts-module" id="mod-speaking"> <label for="ielts-s">Speaking</label> <input type="number" id="ielts-s" placeholder="7.0" min="0" max="9" step="0.5"></div>
+              </div>
+              <div class="ielts-error" id="err-ielts">All 4 scores required (0–9)</div>
+              <div class="ielts-overall" id="ielts-overall-display" style="display:none">Overall Band: <strong id="ielts-overall-val">—</strong></div>
+            </div>
+          </div>
+
+          <!-- CELPIP -->
+          <div class="test-section" id="section-celpip">
+            <div class="ielts-group">
+              <label>Component Scores <span class="label-hint">(1–12)</span></label>
+              <div class="test-scale-note">Most universities require minimum 9 per component.</div>
+              <div class="ielts-grid">
+                <div class="ielts-module" id="mod-cel-l"><label for="cel-l">Listening</label><input type="number" id="cel-l" placeholder="10" min="1" max="12" step="1"></div>
+                <div class="ielts-module" id="mod-cel-r"><label for="cel-r">Reading</label>  <input type="number" id="cel-r" placeholder="10" min="1" max="12" step="1"></div>
+                <div class="ielts-module" id="mod-cel-w"><label for="cel-w">Writing</label>  <input type="number" id="cel-w" placeholder="9"  min="1" max="12" step="1"></div>
+                <div class="ielts-module" id="mod-cel-s"><label for="cel-s">Speaking</label> <input type="number" id="cel-s" placeholder="9"  min="1" max="12" step="1"></div>
+              </div>
+              <div class="ielts-error" id="err-celpip">All 4 scores required (1–12)</div>
+              <div class="ielts-overall" id="celpip-equiv-display" style="display:none">IELTS Equivalent: <strong id="celpip-equiv-val">—</strong></div>
+            </div>
+          </div>
+
+          <!-- Duolingo -->
+          <div class="test-section" id="section-duolingo">
+            <div class="field" id="field-duolingo">
+              <label for="duo-score">Overall Score <span class="label-hint">(10–160)</span></label>
+              <div class="test-scale-note">Most universities require 120+ (≈ IELTS 7.0).</div>
+              <input type="number" id="duo-score" placeholder="120" min="10" max="160" step="5">
+              <div class="field-error" id="err-duolingo">Score must be 10–160</div>
+              <div class="ielts-overall" id="duo-equiv-display" style="display:none">IELTS Equivalent: <strong id="duo-equiv-val">—</strong></div>
+            </div>
+          </div>
+
+          <!-- PTE -->
+          <div class="test-section" id="section-pte">
+            <div class="field" id="field-pte">
+              <label for="pte-score">Overall Score <span class="label-hint">(10–90)</span></label>
+              <div class="test-scale-note">Most universities require 58+ (≈ IELTS 6.5).</div>
+              <input type="number" id="pte-score" placeholder="65" min="10" max="90" step="1">
+              <div class="field-error" id="err-pte">Score must be 10–90</div>
+              <div class="ielts-overall" id="pte-equiv-display" style="display:none">IELTS Equivalent: <strong id="pte-equiv-val">—</strong></div>
+            </div>
+          </div>
+
+        </div><!-- /form-body -->
+
+        <div class="step-footer">
+          <button class="btn-primary btn-full" id="btn-find">
+            Find My Matching Programs
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── STEP 2: Select Programs ──────────────────────────────────── -->
+    <section class="step-section" id="step-2">
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge">Step 2 of 4</div>
+          <h2>Your Matched Programs</h2>
+          <p id="results-summary">Loading...</p>
+          <div class="select-hint">Select up to 5 programs you'd like to apply for.</div>
+        </div>
+
+        <!-- Tier sections injected by JS -->
+        <div id="results-container"></div>
+
+        <div class="step-footer two-btn">
+          <button class="btn-ghost" onclick="goStep(1)">← Back</button>
+          <button class="btn-primary" id="btn-select" disabled>
+            Continue with Selected Programs
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STEP 3: Personal Profile ─────────────────────────────────── -->
+    <section class="step-section" id="step-3">
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge">Step 3 of 4</div>
+          <h2>Your Personal Profile</h2>
+          <p>We need these details to submit your application to universities.</p>
+        </div>
+
+        <div class="form-body">
+
+          <div class="form-row two-col">
+            <div class="field" id="field-dob">
+              <label for="dob">Date of birth</label>
+              <input type="date" id="dob">
+              <div class="field-error" id="err-dob">Required</div>
+            </div>
+            <div class="field" id="field-nationality">
+              <label for="nationality">Country of citizenship</label>
+              <select id="nationality">
+                <option value="">Select country...</option>
+                <option value="IN">India</option>
+                <option value="PK">Pakistan</option>
+                <option value="NG">Nigeria</option>
+                <option value="PH">Philippines</option>
+                <option value="BD">Bangladesh</option>
+                <option value="NP">Nepal</option>
+                <option value="LK">Sri Lanka</option>
+                <option value="CN">China</option>
+                <option value="KE">Kenya</option>
+                <option value="GH">Ghana</option>
+                <option value="OTHER">Other</option>
+              </select>
+              <div class="field-error" id="err-nationality">Required</div>
+            </div>
+          </div>
+
+          <div class="form-row two-col">
+            <div class="field" id="field-degree">
+              <label for="degree">Highest degree completed</label>
+              <select id="degree">
+                <option value="">Select...</option>
+                <option value="bachelors">Bachelor's degree</option>
+                <option value="masters">Master's degree</option>
+                <option value="postgrad_diploma">Post-graduate diploma</option>
+                <option value="other">Other</option>
+              </select>
+              <div class="field-error" id="err-degree">Required</div>
+            </div>
+            <div class="field" id="field-grad-year">
+              <label for="grad-year">Graduation year</label>
+              <input type="number" id="grad-year" placeholder="2023" min="1990" max="2026">
+              <div class="field-error" id="err-grad-year">Enter a valid year</div>
+            </div>
+          </div>
+
+          <div class="field" id="field-institution">
+            <label for="institution">Name of institution attended</label>
+            <input type="text" id="institution" placeholder="University of Delhi">
+            <div class="field-error" id="err-institution">Required</div>
+          </div>
+
+          <div class="field" id="field-field-of-study">
+            <label for="field-of-study">Field of study</label>
+            <input type="text" id="field-of-study" placeholder="Computer Science, Business, Engineering...">
+            <div class="field-error" id="err-field-of-study">Required</div>
+          </div>
+
+          <div class="field">
+            <label for="work-exp">Work experience <span class="label-hint">(optional)</span></label>
+            <select id="work-exp">
+              <option value="none">None</option>
+              <option value="less1">Less than 1 year</option>
+              <option value="1-2">1–2 years</option>
+              <option value="3-5">3–5 years</option>
+              <option value="5plus">5+ years</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="notes">Additional notes <span class="label-hint">(optional)</span></label>
+            <textarea id="notes" rows="3" placeholder="Any specific requirements, preferred city, start date preference, etc."></textarea>
+          </div>
+
+        </div>
+
+        <div class="step-footer two-btn">
+          <button class="btn-ghost" onclick="goStep(2)">← Back</button>
+          <button class="btn-primary" id="btn-profile" onclick="validateProfile()">
+            Continue to Documents
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STEP 4: Documents + Submit ───────────────────────────────── -->
+    <section class="step-section" id="step-4">
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge">Step 4 of 4</div>
+          <h2>Upload Your Documents</h2>
+          <p>Upload now or we'll email you a secure link to upload later. All files are encrypted.</p>
+        </div>
+
+        <div class="form-body">
+          <div class="doc-grid">
+
+            <div class="doc-upload-item" id="doc-transcript">
+              <div class="doc-icon">📄</div>
+              <div class="doc-info">
+                <div class="doc-name">Academic Transcripts <span class="doc-required">Required</span></div>
+                <div class="doc-hint">All years, official or unofficial accepted</div>
+              </div>
+              <label class="doc-btn">
+                <input type="file" class="doc-input" data-doc="transcript" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                <span class="doc-btn-text">Upload</span>
+              </label>
+              <div class="doc-status" id="status-transcript"></div>
+            </div>
+
+            <div class="doc-upload-item" id="doc-english-test">
+              <div class="doc-icon">📝</div>
+              <div class="doc-info">
+                <div class="doc-name">English Test Certificate <span class="doc-required">Required</span></div>
+                <div class="doc-hint">IELTS, CELPIP, Duolingo or PTE result</div>
+              </div>
+              <label class="doc-btn">
+                <input type="file" class="doc-input" data-doc="english-test" accept=".pdf,.jpg,.jpeg,.png">
+                <span class="doc-btn-text">Upload</span>
+              </label>
+              <div class="doc-status" id="status-english-test"></div>
+            </div>
+
+            <div class="doc-upload-item" id="doc-passport">
+              <div class="doc-icon">🛂</div>
+              <div class="doc-info">
+                <div class="doc-name">Passport Copy <span class="doc-required">Required</span></div>
+                <div class="doc-hint">Bio page only — must be valid</div>
+              </div>
+              <label class="doc-btn">
+                <input type="file" class="doc-input" data-doc="passport" accept=".pdf,.jpg,.jpeg,.png">
+                <span class="doc-btn-text">Upload</span>
+              </label>
+              <div class="doc-status" id="status-passport"></div>
+            </div>
+
+            <div class="doc-upload-item" id="doc-cv">
+              <div class="doc-icon">📋</div>
+              <div class="doc-info">
+                <div class="doc-name">Resume / CV <span class="doc-optional">Optional</span></div>
+                <div class="doc-hint">Recommended for MBA and management programs</div>
+              </div>
+              <label class="doc-btn">
+                <input type="file" class="doc-input" data-doc="cv" accept=".pdf,.doc,.docx">
+                <span class="doc-btn-text">Upload</span>
+              </label>
+              <div class="doc-status" id="status-cv"></div>
+            </div>
+
+            <div class="doc-upload-item" id="doc-sop">
+              <div class="doc-icon">✍️</div>
+              <div class="doc-info">
+                <div class="doc-name">Statement of Purpose <span class="doc-optional">Optional</span></div>
+                <div class="doc-hint">If already written — we can help draft one</div>
+              </div>
+              <label class="doc-btn">
+                <input type="file" class="doc-input" data-doc="sop" accept=".pdf,.doc,.docx">
+                <span class="doc-btn-text">Upload</span>
+              </label>
+              <div class="doc-status" id="status-sop"></div>
+            </div>
+
+            <div class="doc-upload-item" id="doc-lor">
+              <div class="doc-icon">📬</div>
+              <div class="doc-info">
+                <div class="doc-name">Letters of Recommendation <span class="doc-optional">Optional</span></div>
+                <div class="doc-hint">2 letters preferred, academic or professional</div>
+              </div>
+              <label class="doc-btn">
+                <input type="file" class="doc-input" data-doc="lor" accept=".pdf,.doc,.docx" multiple>
+                <span class="doc-btn-text">Upload</span>
+              </label>
+              <div class="doc-status" id="status-lor"></div>
+            </div>
+
+          </div><!-- /doc-grid -->
+
+          <div class="upload-later-box">
+            <input type="checkbox" id="upload-later" name="upload-later">
+            <label for="upload-later">I'll upload documents later — just send me the secure link via email</label>
+          </div>
+
+          <div class="consent-box">
+            <input type="checkbox" id="consent" name="consent">
+            <label for="consent">
+              I authorise ADS Immigration (RCIC Regulated) to review my documents and submit applications to Canadian universities on my behalf.
+            </label>
+            <div class="field-error" id="err-consent" style="display:none">Please confirm before submitting</div>
+          </div>
+
+        </div>
+
+        <div class="step-footer two-btn">
+          <button class="btn-ghost" onclick="goStep(3)">← Back</button>
+          <button class="btn-primary btn-submit" id="btn-submit" onclick="submitApplication()">
+            <span id="submit-text">Submit My Application</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SUCCESS ───────────────────────────────────────────────────── -->
+    <section class="step-section" id="step-success">
+      <div class="step-card success-card">
+        <div class="success-icon">✅</div>
+        <h2>Application Submitted!</h2>
+        <p id="success-msg">We've received your application and documents. Our RCIC consultant will review your profile within 1 business day and reach out to confirm next steps.</p>
+        <div class="success-details" id="success-details"></div>
+        <div class="success-actions">
+          <a href="https://adsimmigration.com" class="btn-ghost">Back to ADS Immigration</a>
+          <a href="tel:6043639350" class="btn-primary">📞 Call Us: 604-363-9350</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2026 ADS Immigration · Simran Gill, RCIC · info@adsimmigration.com · 604-363-9350</p>
+      <p style="margin-top:4px;font-size:0.75rem;opacity:0.6">Licensed to recruit internationally educated students for Canadian institutions · IRCC Regulated</p>
+    </div>
+  </footer>
+
+  <script src="js/programs.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

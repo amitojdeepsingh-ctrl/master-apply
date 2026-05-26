@@ -1,0 +1,11 @@
+# Never commit these
+.env
+*.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

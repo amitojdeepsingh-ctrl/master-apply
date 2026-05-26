@@ -1,0 +1,146 @@
+{
+  "name": "Master Apply — Application Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "master-apply-intake",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook — Receive Application",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "master-apply-intake"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Flatten the incoming payload for Airtable\nconst body = $input.first().json.body || $input.first().json;\n\nconst student = body.studentProfile || {};\nconst programs = body.selectedPrograms || [];\nconst docs = body.uploadedDocs || {};\n\n// Format selected programs as readable list\nconst programList = programs.map(p =>\n  `${p.Program_Name} — ${p.University} (${p.City}, ${p.Province})`\n).join('\\n');\n\n// Format doc URLs\nconst docLinks = Object.entries(docs).map(([type, files]) => {\n  if (Array.isArray(files)) {\n    return files.map(f => `${type}: ${f.url}`).join('\\n');\n  }\n  return `${type}: ${files.url || files}`;\n}).join('\\n');\n\nreturn [{\n  json: {\n    // Student info\n    full_name: student.firstName + ' ' + student.lastName,\n    first_name: student.firstName,\n    last_name: student.lastName,\n    email: student.email,\n    phone: student.phone,\n    gpa: student.gpa,\n    test_type: student.testType,\n    ielts_equivalent: student.ieltsEquiv,\n    nationality: student.nationality,\n    dob: student.dob,\n    degree_level: student.degreeLevel,\n    field_of_study: student.fieldOfStudy,\n    institution: student.institution,\n    grad_year: student.gradYear,\n    work_experience: student.workExp,\n    notes: student.notes || '',\n    // Programs\n    programs_selected: programs.length,\n    program_list: programList,\n    // Documents\n    doc_links: docLinks,\n    docs_submitted: Object.keys(docs).join(', '),\n    // Meta\n    submitted_at: body.submittedAt,\n    source: body.source || 'apply.adsimmigration.com',\n    // Raw JSON for reference\n    raw_payload: JSON.stringify(body)\n  }\n}];"
+      },
+      "id": "transform-node",
+      "name": "Transform — Flatten Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "baseId": "={{ $env.AIRTABLE_BASE_ID }}",
+        "tableId": "Applications",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Full Name": "={{ $json.full_name }}",
+            "Email": "={{ $json.email }}",
+            "Phone": "={{ $json.phone }}",
+            "GPA": "={{ $json.gpa }}",
+            "Test Type": "={{ $json.test_type }}",
+            "IELTS Equivalent": "={{ $json.ielts_equivalent }}",
+            "Nationality": "={{ $json.nationality }}",
+            "Date of Birth": "={{ $json.dob }}",
+            "Degree Level": "={{ $json.degree_level }}",
+            "Field of Study": "={{ $json.field_of_study }}",
+            "Institution": "={{ $json.institution }}",
+            "Graduation Year": "={{ $json.grad_year }}",
+            "Work Experience": "={{ $json.work_experience }}",
+            "Notes": "={{ $json.notes }}",
+            "Programs Selected": "={{ $json.programs_selected }}",
+            "Program List": "={{ $json.program_list }}",
+            "Documents Submitted": "={{ $json.docs_submitted }}",
+            "Document Links": "={{ $json.doc_links }}",
+            "Submitted At": "={{ $json.submitted_at }}",
+            "Status": "New",
+            "Source": "={{ $json.source }}"
+          }
+        }
+      },
+      "id": "airtable-node",
+      "name": "Airtable — Save Application",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [720, 200],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "airtable-creds",
+          "name": "Airtable — ADS Immigration"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@adsimmigration.com",
+        "toEmail": "={{ $('Transform — Flatten Payload').first().json.email }}",
+        "subject": "We received your application — Master Apply",
+        "emailType": "html",
+        "message": "<!DOCTYPE html><html><head><meta charset='UTF-8'><style>body{font-family:Arial,sans-serif;color:#1a1a2e;max-width:600px;margin:0 auto;padding:20px}.header{background:#0A1628;padding:24px;border-radius:8px 8px 0 0;text-align:center}.header h1{color:#fff;font-size:22px;margin:0}.header span{color:#C41E3A;font-weight:700}.body{background:#f8f9fa;padding:28px;border-radius:0 0 8px 8px}.greeting{font-size:16px;color:#333}.highlight{background:#fff;border-left:4px solid #C41E3A;padding:16px;margin:16px 0;border-radius:4px}.program-item{padding:6px 0;border-bottom:1px solid #eee;font-size:14px}.footer{text-align:center;margin-top:24px;font-size:12px;color:#999}</style></head><body><div class='header'><h1>Master<span>Apply</span> — ADS Immigration</h1></div><div class='body'><p class='greeting'>Hi {{ $('Transform — Flatten Payload').first().json.first_name }},</p><p>Thank you for submitting your application through <strong>MasterApply</strong>. Our team at ADS Immigration has received your file and will review it within <strong>1–2 business days</strong>.</p><div class='highlight'><strong>Programs you selected:</strong><br>{{ $('Transform — Flatten Payload').first().json.program_list.replace(/\\n/g, '<br>') }}</div><p><strong>Your GPA:</strong> {{ $('Transform — Flatten Payload').first().json.gpa }}<br><strong>English Test:</strong> {{ $('Transform — Flatten Payload').first().json.test_type }} (IELTS equiv: {{ $('Transform — Flatten Payload').first().json.ielts_equivalent }})</p><p>If you have any questions in the meantime, reply to this email or WhatsApp us at <strong>+1 (XXX) XXX-XXXX</strong>.</p><p>Warm regards,<br><strong>ADS Immigration Team</strong></p><div class='footer'>ADS Immigration · apply.adsimmigration.com<br>This email was sent because you submitted an application on our platform.</div></div></body></html>",
+        "options": {}
+      },
+      "id": "student-email-node",
+      "name": "Email — Confirmation to Student",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [720, 380],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-creds",
+          "name": "Resend SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@adsimmigration.com",
+        "toEmail": "info@adsimmigration.com",
+        "subject": "🆕 New Application — {{ $('Transform — Flatten Payload').first().json.full_name }}",
+        "emailType": "html",
+        "message": "<!DOCTYPE html><html><head><meta charset='UTF-8'><style>body{font-family:Arial,sans-serif;color:#1a1a2e;max-width:600px;margin:0 auto;padding:20px}.section{background:#f8f9fa;border-radius:8px;padding:16px;margin:12px 0}.label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.5px}.value{font-size:15px;font-weight:600;color:#0A1628;margin:2px 0 10px}.badge{display:inline-block;background:#C41E3A;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:700}</style></head><body><h2>New Application Received</h2><p>Submitted: <strong>{{ $('Transform — Flatten Payload').first().json.submitted_at }}</strong></p><div class='section'><span class='label'>Student</span><div class='value'>{{ $('Transform — Flatten Payload').first().json.full_name }}</div><span class='label'>Email</span><div class='value'>{{ $('Transform — Flatten Payload').first().json.email }}</div><span class='label'>Phone</span><div class='value'>{{ $('Transform — Flatten Payload').first().json.phone }}</div><span class='label'>Nationality</span><div class='value'>{{ $('Transform — Flatten Payload').first().json.nationality }}</div></div><div class='section'><span class='label'>Academic</span><div class='value'>GPA: {{ $('Transform — Flatten Payload').first().json.gpa }} · {{ $('Transform — Flatten Payload').first().json.test_type }} ({{ $('Transform — Flatten Payload').first().json.ielts_equivalent }} IELTS equiv)</div><span class='label'>Background</span><div class='value'>{{ $('Transform — Flatten Payload').first().json.degree_level }} in {{ $('Transform — Flatten Payload').first().json.field_of_study }} — {{ $('Transform — Flatten Payload').first().json.institution }} ({{ $('Transform — Flatten Payload').first().json.grad_year }})</div></div><div class='section'><span class='label'>Programs Selected ({{ $('Transform — Flatten Payload').first().json.programs_selected }})</span><div class='value' style='white-space:pre-line'>{{ $('Transform — Flatten Payload').first().json.program_list }}</div></div><div class='section'><span class='label'>Documents Uploaded</span><div class='value'>{{ $('Transform — Flatten Payload').first().json.docs_submitted }}</div><div style='font-size:12px;color:#555;white-space:pre-line;margin-top:4px'>{{ $('Transform — Flatten Payload').first().json.doc_links }}</div></div>{% if $('Transform — Flatten Payload').first().json.notes %}<div class='section'><span class='label'>Student Notes</span><div class='value'>{{ $('Transform — Flatten Payload').first().json.notes }}</div></div>{% endif %}</body></html>",
+        "options": {}
+      },
+      "id": "staff-email-node",
+      "name": "Email — Alert to ADS Team",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [720, 520],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-creds",
+          "name": "Resend SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"ok\": true, \"message\": \"Application received\" }"
+      },
+      "id": "response-node",
+      "name": "Response — 200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [960, 300]
+    }
+  ],
+  "connections": {
+    "Webhook — Receive Application": {
+      "main": [[{"node": "Transform — Flatten Payload", "type": "main", "index": 0}]]
+    },
+    "Transform — Flatten Payload": {
+      "main": [[
+        {"node": "Airtable — Save Application", "type": "main", "index": 0},
+        {"node": "Email — Confirmation to Student", "type": "main", "index": 0},
+        {"node": "Email — Alert to ADS Team", "type": "main", "index": 0}
+      ]]
+    },
+    "Airtable — Save Application": {
+      "main": [[{"node": "Response — 200 OK", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "all",
+    "saveDataErrorExecution": "all"
+  }
+}
