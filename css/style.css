@@ -139,6 +139,21 @@ body { font-family: 'Inter', sans-serif; background: #F1F5F9; color: #0A1628; li
 .badge-warn { background: #FEF3C7; color: #92400E; }
 .selected-count { font-size: 0.78rem; color: #C41E3A; font-weight: 600; margin-top: 4px; }
 
+/* ── Filter bar (Step 2) ─────────────────────────────────────── */
+.filter-bar { padding: 14px 28px 10px; background: #F8FAFC; border-bottom: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 10px; }
+.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.filter-label { font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.05em; min-width: 56px; }
+.filter-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+.filter-pill {
+  padding: 5px 12px; border: 1.5px solid #CBD5E1; border-radius: 20px;
+  background: #fff; font-size: 0.75rem; font-weight: 500; color: #475569;
+  cursor: pointer; font-family: inherit; transition: all 150ms;
+}
+.filter-pill:hover { border-color: #C41E3A; color: #C41E3A; }
+.filter-pill.active { background: #C41E3A; border-color: #C41E3A; color: #fff; font-weight: 600; }
+.filter-results-count { font-size: 0.75rem; color: #64748B; padding-top: 2px; }
+.no-filter-results { padding: 32px 28px; text-align: center; color: #64748B; font-size: 0.9rem; }
+
 /* ── Document upload ─────────────────────────────────────────── */
 .doc-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 .doc-upload-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1.5px solid #E2E8F0; border-radius: 10px; background: #FAFBFF; transition: border-color 150ms; }
@@ -180,4 +195,6 @@ body { font-family: 'Inter', sans-serif; background: #F1F5F9; color: #0A1628; li
   .form-body, .step-header { padding: 16px; }
   .step-footer { padding: 16px; }
   .tier-heading, .program-card { padding-left: 16px; padding-right: 16px; }
+  .filter-bar { padding: 12px 16px 8px; }
+  .filter-label { min-width: 62px; }
 }

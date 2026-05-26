@@ -7,10 +7,18 @@
 const N8N_WEBHOOK_URL = 'https://YOUR-N8N-URL/webhook/apply-portal';
 
 // ── State ─────────────────────────────────────────────────────────────
-let activeTest      = 'ielts';
+let activeTest       = 'ielts';
 let selectedPrograms = [];
-let studentProfile  = {};
-let ieltsEquiv      = 0;
+let studentProfile   = {};
+let ieltsEquiv       = 0;
+
+// Filter state
+let filterSort     = 'default';   // 'default' | 'fee-asc' | 'fee-desc'
+let filterDuration = 'all';       // 'all' | '1' | '2'
+let filterIntake   = 'all';       // 'all' | 'sep' | 'jan' | 'may'
+
+// Raw (unfiltered) match results kept for re-filtering
+let rawResults = { strong: [], good: [], possible: [] };
 
 // ── Init ──────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
@@ -18,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initTestTabs();
   initLiveCalc();
   initUploads();
+  initFilters();
   document.getElementById('btn-find').addEventListener('click', runStep1);
   document.getElementById('btn-select').addEventListener('click', () => {
     if (selectedPrograms.length === 0) return;
@@ -144,6 +153,75 @@ function initLiveCalc() {
   });
 }
 
+// ── Filters ───────────────────────────────────────────────────────────
+function initFilters() {
+  // Sort pills
+  document.getElementById('filter-sort').addEventListener('click', e => {
+    const pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    filterSort = pill.dataset.sort;
+    document.querySelectorAll('#filter-sort .filter-pill').forEach(p => p.classList.toggle('active', p === pill));
+    applyFilters();
+  });
+
+  // Duration pills
+  document.getElementById('filter-duration').addEventListener('click', e => {
+    const pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    filterDuration = pill.dataset.duration;
+    document.querySelectorAll('#filter-duration .filter-pill').forEach(p => p.classList.toggle('active', p === pill));
+    applyFilters();
+  });
+
+  // Intake pills
+  document.getElementById('filter-intake').addEventListener('click', e => {
+    const pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    filterIntake = pill.dataset.intake;
+    document.querySelectorAll('#filter-intake .filter-pill').forEach(p => p.classList.toggle('active', p === pill));
+    applyFilters();
+  });
+}
+
+function matchesDuration(program) {
+  if (filterDuration === 'all') return true;
+  const dur = (program.Duration || '').toLowerCase();
+  if (filterDuration === '1') return dur.includes('1 year') || dur.includes('12 month') || dur.includes('15 month');
+  if (filterDuration === '2') return dur.includes('2 year') || dur.includes('24 month');
+  return true;
+}
+
+function matchesIntake(program) {
+  if (filterIntake === 'all') return true;
+  const intakes = (program.Intakes || '').toLowerCase();
+  if (filterIntake === 'sep') return intakes.includes('sep');
+  if (filterIntake === 'jan') return intakes.includes('jan');
+  if (filterIntake === 'may') return intakes.includes('may') || intakes.includes('jun');
+  return true;
+}
+
+function sortPrograms(list) {
+  if (filterSort === 'fee-asc')  return [...list].sort((a, b) => (a.Tuition_CAD || 0) - (b.Tuition_CAD || 0));
+  if (filterSort === 'fee-desc') return [...list].sort((a, b) => (b.Tuition_CAD || 0) - (a.Tuition_CAD || 0));
+  return list; // 'default' — keep tier order (already sorted by tuition asc from matchPrograms)
+}
+
+function applyFilters() {
+  const filtered = {
+    strong:   sortPrograms(rawResults.strong.filter(p => matchesDuration(p) && matchesIntake(p))),
+    good:     sortPrograms(rawResults.good.filter(p => matchesDuration(p) && matchesIntake(p))),
+    possible: sortPrograms(rawResults.possible.filter(p => matchesDuration(p) && matchesIntake(p))),
+  };
+
+  const total = filtered.strong.length + filtered.good.length + filtered.possible.length;
+  const grandTotal = rawResults.strong.length + rawResults.good.length + rawResults.possible.length;
+
+  document.getElementById('filter-count').textContent =
+    total === grandTotal ? `${total} programs` : `${total} of ${grandTotal} programs`;
+
+  renderResults(filtered.strong, filtered.good, filtered.possible, studentProfile.gpa, ieltsEquiv);
+}
+
 // ── Step 1: validate + show results ──────────────────────────────────
 function setErr(fieldId, errId, show) {
   document.getElementById(fieldId)?.classList.toggle('has-error', show);
@@ -197,10 +275,20 @@ function runStep1() {
 
   // Run matching
   const { strong, good, possible } = matchPrograms(gpa, ieltsEquiv);
+  rawResults = { strong, good, possible };
   const total = strong.length + good.length + possible.length;
 
   document.getElementById('results-summary').textContent =
     `${total} programs matched for GPA ${gpa.toFixed(2)} · IELTS equiv ${ieltsEquiv.toFixed(1)} · Select up to 5`;
+
+  // Reset filters to defaults on new search
+  filterSort = 'default'; filterDuration = 'all'; filterIntake = 'all';
+  document.querySelectorAll('.filter-pill').forEach(p => {
+    p.classList.toggle('active',
+      p.dataset.sort === 'default' || p.dataset.duration === 'all' || p.dataset.intake === 'all'
+    );
+  });
+  document.getElementById('filter-count').textContent = `${total} programs`;
 
   renderResults(strong, good, possible, gpa, ieltsEquiv);
   goStep(2);
@@ -308,11 +396,18 @@ function renderResults(strong, good, possible, gpa, ielts) {
   });
 
   if (!strong.length && !good.length && !possible.length) {
+    const isFiltered = filterDuration !== 'all' || filterIntake !== 'all' || filterSort !== 'default';
     container.innerHTML = `
-      <div style="padding:40px;text-align:center;color:#64748B">
-        <div style="font-size:2rem;margin-bottom:12px">😔</div>
-        <div style="font-weight:600;margin-bottom:8px">No matches found for your current scores</div>
-        <div style="font-size:0.85rem">Our RCIC consultant can still help — <a href="tel:6043639350" style="color:#C41E3A">call us</a> to discuss options.</div>
+      <div class="no-filter-results">
+        <div style="font-size:2rem;margin-bottom:12px">${isFiltered ? '🔍' : '😔'}</div>
+        <div style="font-weight:600;margin-bottom:8px;color:#0A1628">
+          ${isFiltered ? 'No programs match your current filters' : 'No matches found for your current scores'}
+        </div>
+        <div style="font-size:0.82rem">
+          ${isFiltered
+            ? 'Try clearing the duration or intake filters above.'
+            : 'Our RCIC consultant can still help — <a href="tel:6043639350" style="color:#C41E3A">call us</a> to discuss options.'}
+        </div>
       </div>`;
   }
 }

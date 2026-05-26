@@ -197,6 +197,36 @@
           <div class="select-hint">Select up to 5 programs you'd like to apply for.</div>
         </div>
 
+        <!-- Filter bar -->
+        <div class="filter-bar" id="filter-bar">
+          <div class="filter-group">
+            <span class="filter-label">Sort by</span>
+            <div class="filter-pills" id="filter-sort">
+              <button class="filter-pill active" data-sort="default" type="button">Best Match</button>
+              <button class="filter-pill" data-sort="fee-asc"  type="button">Fee: Low → High</button>
+              <button class="filter-pill" data-sort="fee-desc" type="button">Fee: High → Low</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Duration</span>
+            <div class="filter-pills" id="filter-duration">
+              <button class="filter-pill active" data-duration="all"  type="button">Any</button>
+              <button class="filter-pill" data-duration="1"   type="button">1 Year</button>
+              <button class="filter-pill" data-duration="2"   type="button">2 Years</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Intake</span>
+            <div class="filter-pills" id="filter-intake">
+              <button class="filter-pill active" data-intake="all" type="button">Any</button>
+              <button class="filter-pill" data-intake="sep"        type="button">September</button>
+              <button class="filter-pill" data-intake="jan"        type="button">January</button>
+              <button class="filter-pill" data-intake="may"        type="button">May</button>
+            </div>
+          </div>
+          <div class="filter-results-count" id="filter-count"></div>
+        </div>
+
         <!-- Tier sections injected by JS -->
         <div id="results-container"></div>
 
